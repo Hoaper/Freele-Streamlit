@@ -1,16 +1,16 @@
 import streamlit as st
 from streamlit_tags import st_tags 
-from dynamic_tabs import dynamic_tabs
-import time
 
 def experience_form(experience_number):
-    st.subheader(f"Опыт работы #{experience_number}")
-    job_title = st.text_input("Job title")
-    company_name = st.text_input("Company name")
-    work_type = st.selectbox("Work-type", ["Полный рабочий день", "Частичная занятость", "Фриланс"])
-    period = st.text_input("Period of work")
-    skills = st.text_input("Skills")
-    description = st.text_area("Description")
+
+    with st.expander(f"Опыт работы #{experience_number}", expanded=True):
+        st.header(f"Опыт работы #{experience_number}")
+        job_title = st.text_input("Job title", key=f"job_title_{experience_number}")
+        company_name = st.text_input("Company name", key=f"company_name_{experience_number}")
+        work_type = st.selectbox("Work-type", ["Полный рабочий день", "Частичная занятость", "Фриланс"], key=f"work_type_{experience_number}")
+        period = st.text_input("Period of work", key=f"period_{experience_number}")
+        skills = st.text_input("Skills", key=f"skills_{experience_number}")
+        description = st.text_area("Description", key=f"description_{experience_number}")
 
     return {
         "job_title": job_title,
@@ -26,17 +26,14 @@ st.title("Форма для ввода данных фрилансера")
 st.header("Основная информация")
 domain = st.text_input("В какой сфере ты хочешь работать")
 
+
+st.header("Опыт работы")
 if 'experiences' not in st.session_state:
     st.session_state.experiences = []
-st.header("Опыт работы")
-experiences = []
 add_experience = st.button("Добавить опыт работы")
-
-experience_number = 1
-while add_experience:
+if add_experience:
     st.session_state.experiences.append(experience_form(len(st.session_state.experiences) + 1))
-    experience_number += 1
-    add_experience = st.button("Добавить еще опыт работы")
+
 
 
 st.header("Образование")
